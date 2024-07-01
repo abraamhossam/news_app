@@ -7,15 +7,19 @@ class NewsService {
   String country = "us";
 
   Future<List<NewsIteamModel>> getNews({required String category}) async {
-    List<NewsIteamModel> listData = [];
-    Uri url = Uri.parse(
-        "https://newsapi.org/v2/top-headlines?country=$country&category=$category&apiKey=$apiKey");
-    http.Response response = await http.get(url);
-    Map<String, dynamic> data = jsonDecode(response.body);
-    List<dynamic> jsonData = data["articles"];
-    for (int index = 0; index < jsonData.length; index++) {
-      listData.add(NewsIteamModel.fromJson(jsonData[index]));
+    try {
+      List<NewsIteamModel> listData = [];
+      Uri url = Uri.parse(
+          "https://newsapi.org/v2/top-headlines?country=$country&category=$category&apiKey=$apiKey");
+      http.Response response = await http.get(url);
+      Map<String, dynamic> data = jsonDecode(response.body);
+      List<dynamic> jsonData = data["articles"];
+      for (int index = 0; index < jsonData.length; index++) {
+        listData.add(NewsIteamModel.fromJson(jsonData[index]));
+      }
+      return listData;
+    } catch (e) {
+      return [];
     }
-    return listData;
   }
 }

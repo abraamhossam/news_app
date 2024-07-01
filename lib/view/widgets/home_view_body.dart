@@ -77,29 +77,51 @@ class HomeViewBody extends StatelessWidget {
           ),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  childCount: snapshot.data!.length,
-                  (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
+              if (snapshot.data!.isEmpty) {
+                return SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: SizeConfig.height! / 1.6,
+                    child: const Center(
+                      child: Text(
+                        "OOps, there is an error",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      child: NewsIteam(
-                        model: snapshot.data![index],
-                      ),
-                    );
-                  },
-                ),
-              );
+                    ),
+                  ),
+                );
+              } else {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: snapshot.data!.length,
+                    (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                        ),
+                        child: NewsIteam(
+                          model: snapshot.data![index],
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
             } else if (snapshot.hasError) {
-              return Padding(
-                padding: EdgeInsets.only(
-                  top: SizeConfig.height! * 0.3,
-                ),
-                child: const SliverToBoxAdapter(
-                  child: Center(
-                    child: Text("there is an error"),
+              return SliverToBoxAdapter(
+                child: SizedBox(
+                  height: SizeConfig.height! / 1.6,
+                  width: SizeConfig.width,
+                  child: const Center(
+                    child: Text(
+                      "OOps, there is an error",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               );
